@@ -61,6 +61,90 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-png-svg-optimal" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/11/png-svg-optimal/" class="article-date">
+  <time datetime="2018-01-11T03:29:57.000Z" itemprop="datePublished">2018-01-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/11/png-svg-optimal/">png和svg图优化试验</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在移动CRM中的png和svg图优化试验，一句话：demo中很爽，项目中落地还需要填坑。<br>
+        
+          <p class="article-more-link">
+            <a href="/2018/01/11/png-svg-optimal/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/01/11/png-svg-optimal/" data-id="cjc9xvsq50000jomluj4k9uv8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webpack/">Webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-static-source-preload" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/10/static-source-preload/" class="article-date">
+  <time datetime="2018-01-10T03:28:35.000Z" itemprop="datePublished">2018-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/10/static-source-preload/">一种前端静态资源预加载方案</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>介绍一种跨webapp 的静态资源预加载方案，涉及的技术有： <code>XHR</code>、<code>HTTP缓存</code>、<code>nodejs</code><br><img src="/2018/01/10/static-source-preload/after-preload.png"></p>
+        
+          <p class="article-more-link">
+            <a href="/2018/01/10/static-source-preload/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/01/10/static-source-preload/" data-id="cjc9xvsqk0003jomlzedva49u" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-the-fe-birthday" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/12/18/the-fe-birthday/" class="article-date">
@@ -88,7 +172,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/18/the-fe-birthday/" data-id="cjbc61vst00002cmlcrnz52y0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/18/the-fe-birthday/" data-id="cjc9xvsqc0001jomlmdi0xedn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -133,7 +217,101 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/12/18/hello-world/" data-id="cjbc5xjn10000egml6rhlkxsf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/12/18/hello-world/" data-id="cjc9xvsre0005jomlq5w4kd8x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-static-source-preload/pre-cache" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/14/static-source-preload/pre-cache/" class="article-date">
+  <time datetime="2017-12-14T08:20:29.627Z" itemprop="datePublished">2017-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        (function() {
+    for (var i = 0; i < CRM_PRE_CACHE_PATH_LIST.length; i++) {
+        preCache(CRM_PRE_CACHE_PATH_LIST[i]);
+    }
+
+    /**
+     * 预缓存外部应用的一些关键静态资源
+     *
+     * @author 80374787 刘斌
+     * @param {string} nginxPath 外部应用的nginx代理路径
+     */
+    function preCache(nginxPath) {
+        var lc = window.location;
+        var manifestUrl = lc.protocol + "//" + lc.host + "/" + nginxPath + "/pre-cache-manifest.json";
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+                    console.log('获取清单文件成功: ' + manifestUrl);
+                    // 清单文件中的files属性，表明所有想预缓存的文件。
+                    preCacheStaticFiles(nginxPath, JSON.parse(xhr.responseText).pathList);
+                } else {
+                    console.error('获取清单文件失败: ' + manifestUrl);
+                }
+            }
+        };
+        xhr.open('get', manifestUrl, true);
+        xhr.send(null);
+    }
+
+    /**
+     * 请求文件清单中的所有文件。
+     * 这些文件应该设成永久缓存的，不然每次还是要额外发送请求
+     *
+     * @author 80374787 刘斌
+     *
+     * @param {string} nginxPath 外部应用的nginx代理路径
+     * @param {string[]} pathList 文件路径列表，均为相对路径
+     */
+    function preCacheStaticFiles(nginxPath, fileShortPathList) {
+        for (var i = 0; i < fileShortPathList.length; i++) {
+            var lc = window.location;
+            var wholeUrl = lc.protocol + "//" + lc.host + "/" + nginxPath + "/" + fileShortPathList[i];
+            preCacheFile(wholeUrl);
+        }
+    }
+
+    /**
+     * 请求单个文件
+     *
+     * @author 80374787 刘斌
+     * @param {string} fileUrl
+     */
+    function preCacheFile(fileUrl) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+                    console.log('获取文件成功: ' + fileUrl);
+                } else {
+                    console.error('获取文件失败: ' + fileUrl);
+                }
+            }
+        };
+        xhr.open('get', fileUrl, true);
+        xhr.send(null);
+    }
+})();
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/12/14/static-source-preload/pre-cache/" data-id="cjc9xvsrt0006jomlvtgtayfa" class="article-share-link">Share</a>
       
       
     </footer>
@@ -153,15 +331,29 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webpack/">Webpack</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li></ul>
     </div>
   </div>
 
@@ -174,11 +366,23 @@
       <ul>
         
           <li>
+            <a href="/2018/01/11/png-svg-optimal/">png和svg图优化试验</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/static-source-preload/">一种前端静态资源预加载方案</a>
+          </li>
+        
+          <li>
             <a href="/2017/12/18/the-fe-birthday/">前端秘密小组织</a>
           </li>
         
           <li>
             <a href="/2017/12/18/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/static-source-preload/pre-cache/">(no title)</a>
           </li>
         
       </ul>
@@ -193,7 +397,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 John Doe<br>
+      &copy; 2018 John Doe<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
