@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/01/10/static-source-preload/after-preload.png">
 <meta property="og:image" content="http://yoursite.com/2018/01/10/static-source-preload/doing-preload.png">
 <meta property="og:image" content="http://yoursite.com/2018/01/10/static-source-preload/after-preload.png">
-<meta property="og:updated_time" content="2018-01-10T03:48:18.448Z">
+<meta property="og:updated_time" content="2018-01-11T07:55:06.502Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一种前端静态资源预加载方案">
 <meta name="twitter:description" content="介绍一种跨webapp 的静态资源预加载方案，涉及的技术有： XHR、HTTP缓存、nodejs">
@@ -100,7 +100,7 @@
 <p>把这个文件放到<code>www/pre-cache</code>文件夹下（没有文件夹请创建一个）。</p>
 <p><strong>注意：</strong>  这个文件中的内容请仔细考虑，只预缓存那些真正需要缓存的应用。</p>
 <h3 id="真正做预缓存的文件pre-cache-js"><a href="#真正做预缓存的文件pre-cache-js" class="headerlink" title="真正做预缓存的文件pre-cache.js"></a>真正做预缓存的文件<code>pre-cache.js</code></h3><p>内容较长，参见附件<code>pre-cache.js</code>， 使用时直接拷贝到<code>www/pre-cache</code>即可，无需修改</p>
-<p><a href="pre-cache.js">pre-cache.js</a></p>
+<p><a href="/js/static-source-preload/pre-cache.js">pre-cache.js</a></p>
 <h3 id="展示A的空闲时间加载上述js"><a href="#展示A的空闲时间加载上述js" class="headerlink" title="展示A的空闲时间加载上述js"></a>展示A的空闲时间加载上述<code>js</code></h3><p><strong><code>app.component.ts</code></strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ngAfterViewInit() &#123;</span><br><span class="line">	this.utilService.loadScriptAsync( &quot;pre-cache/pre-cache.config.js&quot;, () =&gt; &#123;</span><br><span class="line">		this.utilService.loadScriptAsync( &quot;pre-cache/pre-cache.js&quot; );</span><br><span class="line">	&#125; );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong><code>utils.service.ts</code></strong></p>
@@ -120,7 +120,7 @@
 </li>
 <li><p>动态生成清单文件<code>generate-pre-cache.js</code></p>
 <p> 内容较长，参见附件<code>generate-pre-cache.js</code>， 使用时直接拷贝到项目根目录即可，无需修改</p>
-<p> <a href="generate-pre-cache.js">generate-pre-cache.js</a></p>
+<p> <a href="/js/static-source-preload/generate-pre-cache.js">generate-pre-cache.js</a></p>
 </li>
 <li><p>在package.json中生成<code>script</code></p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;generatePreCache&quot;: &quot;node generate-pre-cache.js&quot;</span><br></pre></td></tr></table></figure>
@@ -142,7 +142,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/10/static-source-preload/" data-id="cjc9xvsqk0003jomlzedva49u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/10/static-source-preload/" data-id="cjca6go7900006kmlsosk8o33" class="article-share-link">Share</a>
       
       
     </footer>
@@ -227,10 +227,6 @@
         
           <li>
             <a href="/2017/12/18/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2017/12/14/static-source-preload/pre-cache/">(no title)</a>
           </li>
         
       </ul>
