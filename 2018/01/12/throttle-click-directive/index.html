@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>throttle-click-directive | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="解决移动CRM中点击路由按钮多次重复跳转目标页面的BUG，主要涉及的技术是rxjs。">
+<meta name="keywords" content="RXJS,Directive,Angular">
+<meta property="og:type" content="article">
+<meta property="og:title" content="throttle-click-directive">
+<meta property="og:url" content="http://yoursite.com/2018/01/12/throttle-click-directive/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="解决移动CRM中点击路由按钮多次重复跳转目标页面的BUG，主要涉及的技术是rxjs。">
+<meta property="og:updated_time" content="2018-01-12T01:42:05.697Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="throttle-click-directive">
+<meta name="twitter:description" content="解决移动CRM中点击路由按钮多次重复跳转目标页面的BUG，主要涉及的技术是rxjs。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-throttle-click-directive" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/12/throttle-click-directive/" class="article-date">
+  <time datetime="2018-01-12T01:38:26.000Z" itemprop="datePublished">2018-01-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      throttle-click-directive
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>解决移动CRM中点击路由按钮多次重复跳转目标页面的BUG，主要涉及的技术是<code>rxjs</code>。<br><a id="more"></a></p>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>移动CRM的很多页面里点击某些元素会跳转到另一个页面（如点击列表项进入详情页），但是有时候如果快速点击，可能会重复显示多个目标页面。 即使在微信上也会这种情况，试试快速多次点击“朋友圈”按钮。</p>
+<h1 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h1><p>具体来说，第一次点击元素总会立即生效，但接下来的3秒内如果继续点击这个元素，会直接被忽略掉。 这种方案可以很大程度上缓解上述BUG。具体代码如下：</p>
+<p><code>appThrottleClick.directive.ts</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * &lt;div  (throttleClick)=&quot;goExceptionReport()&quot; [throttleTime]=&quot;5000&quot;&gt;throttleClick 5 S&lt;/div&gt;</span><br><span class="line"> * &lt;div  (throttleClick)=&quot;goExceptionReport()&quot;&gt;throttleClick default&lt;/div&gt;</span><br><span class="line"> * &lt;div tappable (throttleClick)=&quot;goExceptionReport()&quot;&gt;throttleClick default with tappable&lt;/div&gt;</span><br><span class="line"> */</span><br><span class="line">import &#123; Directive, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output &#125; from &quot;@angular/core&quot;;</span><br><span class="line">import &#123; Subject &#125; from &quot;rxjs/Subject&quot;;</span><br><span class="line">import &#123; Subscription &#125; from &quot;rxjs/Subscription&quot;;</span><br><span class="line"></span><br><span class="line">@Directive( &#123;</span><br><span class="line">  // tslint:disable-next-line:directive-selector</span><br><span class="line">  selector: &quot;[throttleClick]&quot;,</span><br><span class="line">&#125; )</span><br><span class="line">export class ThrottleClickDirective implements OnInit, OnDestroy &#123;</span><br><span class="line">  @Input() public throttleTime = 3000;</span><br><span class="line">  @Output() public throttleClick = new EventEmitter();</span><br><span class="line">  private clicks = new Subject&lt;any&gt;();</span><br><span class="line">  private subscription: Subscription;</span><br><span class="line"></span><br><span class="line">  constructor() &#123;</span><br><span class="line">    //</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public ngOnInit() &#123;</span><br><span class="line">    this.subscription = this.clicks</span><br><span class="line">      .throttleTime( this.throttleTime )</span><br><span class="line">      .subscribe(( e ) =&gt; this.throttleClick.emit( e ) );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public ngOnDestroy() &#123;</span><br><span class="line">    this.subscription.unsubscribe();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * 监听并拦截宿主元素的click事件</span><br><span class="line">   * @param event click事件对象</span><br><span class="line">   */</span><br><span class="line">  @HostListener( &quot;click&quot;, [ &quot;$event&quot; ] )</span><br><span class="line">  public clickEvent( event: MouseEvent ) &#123;</span><br><span class="line">    event.preventDefault();</span><br><span class="line">    event.stopPropagation();</span><br><span class="line">    this.clicks.next( event );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要是利用了RXJS的<code>throttleTime</code>操作符，这个操作符只会保留指定时间内事件流中发射的第一个值，随后的值都会被忽略。</p>
+<h1 id="如何修复"><a href="#如何修复" class="headerlink" title="如何修复"></a>如何修复</h1><ol>
+<li>确保你的模块引入了上述指令。</li>
+<li><p>在需要解决上述BUG上元素上，将 click 改为 <code>throttleClick</code> 即可，例如</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div tappable (click)=&quot;test()&quot;&gt;以前大家是这么写的&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p> 改为</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div tappable (throttleClick)=&quot;test()&quot;&gt;把click改成throttleClick就行啦~~~&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>如果觉得3秒不合适，也可以改掉</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div tappable (throttleClick)=&quot;test()&quot; [throttleTime]=&quot;5000&quot;&gt;现在时间的阈值改成5秒啦~~~&lt;/div&gt;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/01/12/throttle-click-directive/" data-id="cjcb99vda0002iwmlt9yqg4e9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Angular/">Angular</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Directive/">Directive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RXJS/">RXJS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/01/11/png-svg-optimal/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">png和svg图优化试验</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Directive/">Directive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RXJS/">RXJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webpack/">Webpack</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/Directive/" style="font-size: 10px;">Directive</a> <a href="/tags/RXJS/" style="font-size: 10px;">RXJS</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/12/throttle-click-directive/">throttle-click-directive</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/11/png-svg-optimal/">png和svg图优化试验</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/10/static-source-preload/">一种前端静态资源预加载方案</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/18/the-fe-birthday/">前端秘密小组织</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/18/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
