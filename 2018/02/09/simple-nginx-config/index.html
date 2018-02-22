@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>介绍一些简单的nginx配置 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记录在项目中用到的一些常用的nginx配置。">
+<meta name="keywords" content="NGINX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="介绍一些简单的nginx配置">
+<meta property="og:url" content="http://yoursite.com/2018/02/09/simple-nginx-config/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="记录在项目中用到的一些常用的nginx配置。">
+<meta property="og:updated_time" content="2018-02-09T09:29:26.964Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="介绍一些简单的nginx配置">
+<meta name="twitter:description" content="记录在项目中用到的一些常用的nginx配置。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-simple-nginx-config" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/09/simple-nginx-config/" class="article-date">
+  <time datetime="2018-02-09T09:26:38.000Z" itemprop="datePublished">2018-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      介绍一些简单的nginx配置
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>记录在项目中用到的一些常用的nginx配置。<br><a id="more"></a></p>
+<h1 id="cache-control、expires"><a href="#cache-control、expires" class="headerlink" title="cache-control、expires"></a>cache-control、expires</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location ~* \.(jpg|jpeg|png|gif|css|js|woff|woff2)$ &#123;</span><br><span class="line">		root D:\ws\M1703921\lc07-com-app\www;</span><br><span class="line">		expires max;</span><br><span class="line">		add_header Cache-Control public,no-store,max-age=-1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h1 id="etag"><a href="#etag" class="headerlink" title="etag"></a>etag</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">	# your other config</span><br><span class="line"></span><br><span class="line">	# turn on etag</span><br><span class="line">	etag on</span><br><span class="line"></span><br><span class="line">	# your other config</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h1 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">	# your other config</span><br><span class="line"></span><br><span class="line">	gzip on;</span><br><span class="line">	gzip_types text/plain application/x-javascript text/css application/xml text/javascript image/jpeg image/gif image/png;</span><br><span class="line"></span><br><span class="line">	# your other config</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h1 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">	root   D:\ws\M1703921\lc07-com-app\www;</span><br><span class="line">	add_header &quot;Access-Control-Allow-Origin&quot; &quot;*&quot;;</span><br><span class="line">	add_header &quot;Access-Control-Allow-Methods&quot; &quot;GET&quot;;</span><br><span class="line">	index  crm.html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h1 id="上线升级页面"><a href="#上线升级页面" class="headerlink" title="上线升级页面"></a>上线升级页面</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">set $ENTRE_PAGE crm.html; #登录应用的入口页面，默认为crm.html</span><br><span class="line">set $flag 0; # 用来在升级过程中将所有请求全部转向升级页面的标志</span><br><span class="line"></span><br><span class="line">   &lt;% if ENV[&quot;IS_UPGRADING&quot;] %&gt;</span><br><span class="line">       # 如果正在升级：1. 应用入口改为升级页面  2. 设置重定向flag</span><br><span class="line">       &lt;% if ENV[&quot;IS_UPGRADING&quot;] == &quot;Y&quot; %&gt;</span><br><span class="line">         set $ENTRE_PAGE upgrading.html;</span><br><span class="line">         set $flag &quot;$&#123;flag&#125;1&quot;;</span><br><span class="line">       &lt;% end %&gt;</span><br><span class="line">       # 否则表示升级完成： 1. 应用入口改为登录页面</span><br><span class="line">       &lt;% else %&gt;</span><br><span class="line">           set $ENTRE_PAGE crm.html;</span><br><span class="line">   &lt;% end %&gt;</span><br><span class="line"></span><br><span class="line">   # 如果不是直接请求升级页面，那么设置重定向flag</span><br><span class="line">   if ($request_uri !~ upgrading\.html)&#123;</span><br><span class="line">     set $flag &quot;$&#123;flag&#125;2&quot;;</span><br><span class="line">   &#125;</span><br><span class="line">   # 如果正在升级，且不是直接请求升级页面，那么</span><br><span class="line">   # 1. 重定向所有其他.html、.do请求到升级页面</span><br><span class="line">   # 2. 重定向一事通入口地址到升级页面</span><br><span class="line">   # 3. 重定向推屏链接到升级页面</span><br><span class="line">   if ($flag = &quot;012&quot; )&#123;</span><br><span class="line">     rewrite ^/(?:.*)\.(html|do)(?:.*)  /upgrading.html permanent; #其他html、do</span><br><span class="line">     rewrite ^/ystPaaSCrm  /upgrading.html permanent; #一事通入口</span><br><span class="line">     rewrite ^/ystPushNotice  /upgrading.html permanent; #推屏</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/02/09/simple-nginx-config/" data-id="cjdye6bhk0005ygmlfj55x96b" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NGINX/">NGINX</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/02/09/how-to-split-common-function-to-single-app/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          记录在拆分应用时用到的一些关键技术
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/23/front-end-monitor-system/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">移动CRM前端监控系统尝试</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Directive/">Directive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RXJS/">RXJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/Directive/" style="font-size: 10px;">Directive</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/RXJS/" style="font-size: 10px;">RXJS</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/22/crm-trackor-system/">移动CRM中的埋点方案预研</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/09/how-to-split-common-function-to-single-app/">记录在拆分应用时用到的一些关键技术</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/09/simple-nginx-config/">介绍一些简单的nginx配置</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/23/front-end-monitor-system/">移动CRM前端监控系统尝试</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/12/throttle-click-directive/">throttle-click-directive</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

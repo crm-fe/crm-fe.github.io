@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>记录在拆分应用时用到的一些关键技术 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="以拆分有话说为例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录在拆分应用时用到的一些关键技术">
+<meta property="og:url" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="以拆分有话说为例">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/太多外链js文件.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/合并前请求的数目.png">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-b574cf32f8d968ec8546418eac91ac03_b.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/合并第三方js后.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/合并后请求的js数目.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/ionic3.5.3的js大小.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/ionic3.6.0的js大小.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/未设置缓存.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/配置了缓存.PNG">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/添加缓存后的响应头.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/启用ETag.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/开启ETag时的条件GET请求.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/禁用ETag.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/关闭ETag时的条件GET请求.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/抓包-未缓存时.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/抓包-缓存后.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/ios使用iframe预先缓存.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/ios缓存后再进入有话说.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/安卓使用iframe预先缓存.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/安卓缓存后再进入有话说.png">
+<meta property="og:updated_time" content="2018-02-09T09:38:59.063Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记录在拆分应用时用到的一些关键技术">
+<meta name="twitter:description" content="以拆分有话说为例">
+<meta name="twitter:image" content="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/太多外链js文件.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-how-to-split-common-function-to-single-app" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/09/how-to-split-common-function-to-single-app/" class="article-date">
+  <time datetime="2018-02-09T09:31:42.000Z" itemprop="datePublished">2018-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      记录在拆分应用时用到的一些关键技术
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以拆分有话说为例<br><a id="more"></a></p>
+<p>[TOC]</p>
+<h1 id="必要修改"><a href="#必要修改" class="headerlink" title="必要修改"></a>必要修改</h1><h2 id="COM、CM、TM"><a href="#COM、CM、TM" class="headerlink" title="COM、CM、TM"></a>COM、CM、TM</h2><h3 id="删除有话说模块"><a href="#删除有话说模块" class="headerlink" title="删除有话说模块"></a>删除有话说模块</h3><p>直接删掉整个文件夹，然后<code>ionic serve</code>修复一下语法报错</p>
+<h3 id="跳转有话说的方式"><a href="#跳转有话说的方式" class="headerlink" title="跳转有话说的方式"></a>跳转有话说的方式</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> lc = <span class="built_in">window</span>.location;</span><br><span class="line"><span class="keyword">let</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</span><br><span class="line"><span class="keyword">let</span> fdbkPage = <span class="keyword">this</span>.crmNavService.getTopNav( <span class="keyword">this</span>.appCtrl.getActiveNav() );</span><br><span class="line"><span class="keyword">this</span>.ystUtilsService.openTagWithoutDataToken(</span><br><span class="line"> <span class="string">`<span class="subst">$&#123; lc.protocol &#125;</span>//<span class="subst">$&#123; lc.host &#125;</span>/<span class="subst">$&#123; PATHS.WANTTOSAY &#125;</span>/index.html?v=<span class="subst">$&#123; now &#125;</span>&amp;fdbkPage=<span class="subst">$&#123; fdbkPage &#125;</span>#/wanttosay`</span> );</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>openTagWithoutDataToken</code>内部使用一事通的<code>openUrl</code>方法，可以携带cookie到目标页面，不管是否同域。这样就解决了权限认证的问题</li>
+<li><p><code>PATHS.WANTTOSAY</code>是一个nginx的反向代理，代理到真正的有话说前端应用地址</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /lc07WantToSay/ &#123;</span><br><span class="line">    proxy_pass http://lc07-want-to-say-lt.paas.cmbchina.cn/;</span><br><span class="line">    proxy_cookie_path / /lc07WantToSay/;</span><br><span class="line">    proxy_cookie_path loginpath / ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这样在浏览器中也可以调试，不会受到权限的困扰，也不用在前端代码中把地址写死</p>
+<ol>
+<li><p><code>index.html</code>中的细节</p>
+<ol>
+<li>查询参数添加<code>v=XXX</code>，可以防止在应用更新时的<code>html</code>缓存</li>
+<li>其他必要的参数也通过查询参数传递，因为一事通的<code>openUrl</code>不能往目标页面传递数据</li>
+<li>若应用是懒加载的，有必要在<code>url</code>最后添加<code>#/urlSegment</code>，<code>urlSegment</code>是你默认根页面配置的<code>segment</code>（参见<code>IonicPage</code>配置）。 若不加这些，会发现需要点两次安卓返回键才能返回。因为从<code>index.html</code>转到<code>index.html#/urlSegment</code>会添加一条历史记录。</li>
+<li><p>若需要直接跳到其他懒加载页面，只需修改跳转的<code>urlSegment</code>即可。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">this.ystUtilsService.openTagWithoutDataToken(</span><br><span class="line"> `$&#123; lc.protocol &#125;//$&#123; lc.host &#125;/$&#123; PATHS.WANTTOSAY &#125;/index.html?v=$&#123; now &#125;#/wanttosaymine/$&#123; this.userCode &#125;` );</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="有话说"><a href="#有话说" class="headerlink" title="有话说"></a>有话说</h2><h3 id="去除无用代码"><a href="#去除无用代码" class="headerlink" title="去除无用代码"></a>去除无用代码</h3><ol>
+<li>删掉其他无用的模块文件夹，以及<code>core</code>、<code>shared</code>中一些无用的部分</li>
+<li>如果项目的<code>node_modules</code>是从cm/tm/com拷贝的，那么需要去掉<code>@ionic</code>中多余的构建代码</li>
+<li>审查<code>index.html</code>中加载的资源，去除所有无用的代码</li>
+</ol>
+<h3 id="必要代码改造"><a href="#必要代码改造" class="headerlink" title="必要代码改造"></a>必要代码改造</h3><h4 id="安卓返回键问题"><a href="#安卓返回键问题" class="headerlink" title="安卓返回键问题"></a>安卓返回键问题</h4><p>在跳转到所有<strong>入口页面</strong>后，页面上默认是不会有返回键的，需要在模板中添加定制的组件<code>crm-back-button</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;ion-header&gt;</span><br><span class="line">        &lt;!--正常代码--&gt;</span><br><span class="line">&lt;/ion-header&gt;</span><br><span class="line">&lt;crm-back-button&gt;&lt;/crm-back-button&gt;</span><br></pre></td></tr></table></figure>
+<p>此组件是一个按钮，点击它会关闭由<code>openUrl</code>打开的页面</p>
+<h4 id="一事通浮动图标刷新"><a href="#一事通浮动图标刷新" class="headerlink" title="一事通浮动图标刷新"></a>一事通浮动图标刷新</h4><p>点击浮动图标的刷新后，会直接刷新当前<code>url</code>，若对应的组件获取路由数据的方式不对，很有可能会直接导致应用崩溃。为此需要所有懒加载页面改变获取路由参数的方式，改为从url中获取。</p>
+<ol>
+<li>懒加载页面中<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@IonicPage( &#123;</span><br><span class="line">  segment: &quot;wanttosaydetail/:data&quot;, // data就是页面所需的路由参数</span><br><span class="line">&#125; )</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>数据获取方式还是跟以前一样就行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.navParams.get( &quot;data&quot; )</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>跳转时传递数据的方式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">this.navCtrl.push( &quot;WanttosayDetailComponent&quot;, &#123;</span><br><span class="line">      data: JSON.stringify( &#123; id, userId: this.userId &#125; )</span><br><span class="line">    &#125; );</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h1><h2 id="减少资源体积"><a href="#减少资源体积" class="headerlink" title="减少资源体积"></a>减少资源体积</h2><p>尽量减少启动时所要加载的资源，可以做的有</p>
+<ol>
+<li>减少无用ts代码</li>
+<li>研究<code>index.html</code>中链接的资源，把无用的代码都删掉</li>
+</ol>
+<h2 id="减少启动加载的链接数目"><a href="#减少启动加载的链接数目" class="headerlink" title="减少启动加载的链接数目"></a>减少启动加载的链接数目</h2><p><img src="太多外链js文件.png" alt=""><br><img src="合并前请求的数目.png" alt=""></p>
+<ol>
+<li><p>将多个<code>css</code>文件合并成一个，可以参考我写的小工具<code>mergeCss</code>，只需在配置文件<code>merge-css.config.js</code>中填写需要合并的<code>css</code>文件，然后运行</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run  mergeCss</span><br></pre></td></tr></table></figure>
+<p> 就可以把他们压缩成一个文件.例如</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var mergeCssConfig = &#123;</span><br><span class="line">    outputFilePath: &apos;./www/build/main.css&apos;,// 最终压缩成的单一css文件路径</span><br><span class="line">    fileList: [</span><br><span class="line">        // &apos;./www/startup/load-prepare.css&apos;, // 启动画面</span><br><span class="line">        &apos;./www/build/main.css&apos;, // build生成的样式文件</span><br><span class="line">        &quot;./www/startup/startup_v2.css&quot;, // 设置表情相关样式</span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>外链<code>js</code>处理，对于在<code>index.html</code>中的外链js，可以分2种情况</p>
+<ol>
+<li><p>必须在<code>main.js</code>之前加载解析完成。此时就要将他们合并成1个文件，可以参考我写的小工具<code>uglify3rdPartyLib</code>，只需在配置文件<code>uglify-3rd-party-lib.config.js</code>中填写需要合并的<code>js</code>文件，然后运行</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run  uglify3rdPartyLib</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>就可以把他们压缩成一个文件.例如</p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var uglify3rdPartyLibConfig = &#123;</span><br><span class="line">    outputFilePath: &apos;./www&apos;, // 最终压缩成的单一js文件路径</span><br><span class="line">    outputFileName: &apos;3rdPartyLib.js&apos;, // index.html需要使用此名称</span><br><span class="line">    fileList: [</span><br><span class="line">        &apos;./www/startup/loading-prepare.js&apos;,</span><br><span class="line">        &quot;./www/lib/js-emoji/emoji_v2.min.js&quot;,</span><br><span class="line">        &quot;./www/startup/startup_v2.js&quot;,</span><br><span class="line">        &apos;./www/lib/yst/MobileJS.min.js&apos;,</span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</code></pre><ol>
+<li><p>可以在<code>main.js</code>加载完成之后再加载。此时使用<code>defer</code>或者动态生成<code>script DOM</code></p>
+<p><code>defer</code>和<code>async</code>区别<br><img src="https://pic4.zhimg.com/v2-b574cf32f8d968ec8546418eac91ac03_b.png" alt=""></p>
+<p><code>defer</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&apos;lib/hammer.min.js&apos; defer&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>动态<code>script DOM</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let body = document.getElementsByTagName( &quot;body&quot; )[ 0 ];</span><br><span class="line">let script = document.createElement( &quot;script&quot; );</span><br><span class="line">script.type = &quot;text/javascript&quot;;</span><br><span class="line">script.src = &quot;lib/d3.js/d3.v3.min.js&quot;;</span><br><span class="line">body.appendChild( script );</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<p>合并后的效果<br><img src="合并第三方js后.png" alt=""><br><img src="合并后请求的js数目.png" alt=""><br>    TODO:添加defer、async的图</p>
+<h2 id="升级ionic版本"><a href="#升级ionic版本" class="headerlink" title="升级ionic版本"></a>升级ionic版本</h2><ol>
+<li>ionic 3.6.0 会自动帮助我们生成<code>vendor.js</code>，在此之前都是需要我们手动配置<code>webapck</code>才能生成此文件。而且经过一些测试发现，前者生成的各个js的<strong>总体积</strong>要小很多。</li>
+<li>3.6.0版本与之前版本另一个不同之处是会在项目本地安装<code>ionic</code>，此前都是利用全局的<code>ionic</code>。此特性可以让我们在不同的应用使用不同版本的<code>ionic</code></li>
+</ol>
+<p>ionic 3.5.3时js文件大小<br><img src="ionic3.5.3的js大小.png" alt=""></p>
+<p>ionic 3.6.0时js文件大小<br><img src="ionic3.6.0的js大小.png" alt=""></p>
+<h2 id="缓存及gzip"><a href="#缓存及gzip" class="headerlink" title="缓存及gzip"></a>缓存及gzip</h2><p><img src="未设置缓存.png" alt=""></p>
+<h3 id="缓存图片、css、js、字体"><a href="#缓存图片、css、js、字体" class="headerlink" title="缓存图片、css、js、字体"></a>缓存图片、css、js、字体</h3><ol>
+<li><p>缓存配置</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location ~* \.(jpg|jpeg|png|gif|css|js|woff|woff2)$ &#123;</span><br><span class="line">	root D:\ws\lc07-want-to-say\www;</span><br><span class="line">	expires max;</span><br><span class="line">	add_header Cache-Control public;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>若没有<code>expires</code>头部，仍然会由浏览器缓存，但在后续请求中，浏览器会检查缓存若发现资源已经过期，会先发送一个条件GET请求来判断资源是否改变。<br>有<code>expires</code>头部时，会在过期的时间内直接获取缓存中的资源，不发送后台请求。<br><img src="配置了缓存.PNG" alt=""><br><img src="添加缓存后的响应头.png" alt=""></p>
+<ol>
+<li>完善gzip，目前图片和动态rmi.do这些请求都没有被gzip压缩。添加配置 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzip_types image/* application/json;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="禁用ETag响应头"><a href="#禁用ETag响应头" class="headerlink" title="禁用ETag响应头"></a>禁用ETag响应头</h3><p><img src="启用ETag.png" alt=""></p>
+<ol>
+<li><p>ETag的缺陷</p>
+<ul>
+<li>如果应用在多个服务器上部署了，那么不同服务器对于相同的资源会产生不同的ETag。当浏览器缓存了A服务器的一个资源，然后向B服务器发起条件GET请求，那么ETag不会匹配，此时会返回200响应，而不是304。</li>
+<li>如果发送条件GET时，一起发送了<code>If-None-Match</code>和<code>If-Modefied-Since</code>，除非二者都匹配了，否则不会返回304。<br>  <img src="开启ETag时的条件GET请求.png" alt=""></li>
+</ul>
+</li>
+<li><p>配置nginx禁用ETag，在http块中配置</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etag off;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="禁用ETag.png" alt=""></p>
+<p><img src="关闭ETag时的条件GET请求.png" alt=""></p>
+<h3 id="解决空缓存"><a href="#解决空缓存" class="headerlink" title="解决空缓存"></a>解决空缓存</h3><p>在用户第一次进入有话说前，本地是没有对应资源的缓存的，即空缓存。 那么第一次进入页面时就会从头开始请求所有资源：<br><img src="抓包-未缓存时.png" alt=""></p>
+<p>只有第二次进入页面才会利用到缓存：<br><img src="抓包-缓存后.png" alt=""></p>
+<p><strong>更新：最好使用资源预加载那篇文章介绍的方法。</strong></p>
+<p>可以在第一次进入有话说前就预先访问一次页面，提前缓存所有资源，这样就解决了空缓存：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 使用隐藏的iframe预先加载一些通用的外链app，这样可以将他们缓存住</span><br><span class="line">*</span><br><span class="line">* @param &#123;string&#125; nginxPath 此app在nginx中配置的代理路径，详见PATHS</span><br><span class="line">*</span><br><span class="line">* @memberOf UtilsService</span><br><span class="line">*/</span><br><span class="line">preLoadCommonApp ( nginxPath: string ) &#123;</span><br><span class="line">	let lc = window.location;</span><br><span class="line">	let now = new Date().getTime();</span><br><span class="line"></span><br><span class="line">	let body = document.getElementsByTagName( &quot;body&quot; )[ 0 ];</span><br><span class="line">	let iframe: HTMLIFrameElement = document.createElement( &quot;iframe&quot; );</span><br><span class="line">	iframe.style.display = &quot;none&quot;;</span><br><span class="line">	iframe.src = `$&#123; lc.protocol &#125;//$&#123; lc.host &#125;/$&#123; nginxPath &#125;/index.html`;</span><br><span class="line">	body.appendChild( iframe );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ios使用iframe预先缓存：<br><img src="ios使用iframe预先缓存.png" alt=""></p>
+<p>ios缓存后再进入有话说：<br><img src="ios缓存后再进入有话说.png" alt=""></p>
+<p>安卓使用iframe预先缓存：<br><img src="安卓使用iframe预先缓存.png" alt=""></p>
+<p>安卓缓存后再进入有话说：<br><img src="安卓缓存后再进入有话说.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/02/09/how-to-split-common-function-to-single-app/" data-id="cjdye6bh50001ygmlnz5010nl" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/02/22/crm-trackor-system/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          移动CRM中的埋点方案预研
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/02/09/simple-nginx-config/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">介绍一些简单的nginx配置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Angular/">Angular</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Directive/">Directive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NGINX/">NGINX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RXJS/">RXJS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webpack/">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Angular/" style="font-size: 10px;">Angular</a> <a href="/tags/Directive/" style="font-size: 10px;">Directive</a> <a href="/tags/NGINX/" style="font-size: 10px;">NGINX</a> <a href="/tags/RXJS/" style="font-size: 10px;">RXJS</a> <a href="/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/22/crm-trackor-system/">移动CRM中的埋点方案预研</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/09/how-to-split-common-function-to-single-app/">记录在拆分应用时用到的一些关键技术</a>
+          </li>
+        
+          <li>
+            <a href="/2018/02/09/simple-nginx-config/">介绍一些简单的nginx配置</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/23/front-end-monitor-system/">移动CRM前端监控系统尝试</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/12/throttle-click-directive/">throttle-click-directive</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
